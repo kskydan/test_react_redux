@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+
+import routes from './routes';
+import configureStore from './store';
+
 import './App.css';
 
-// pages
-import HomePage from "./pages/HomePage";
+const store = configureStore()
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <HomePage />
-      </div>
-    );
+      <Provider store={store}>{routes}</Provider>
+    )
   }
 }
 
-export default App;
+export default App
