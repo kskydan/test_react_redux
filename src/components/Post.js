@@ -12,7 +12,7 @@ class Post extends React.Component {
 
     // list of comments
     const commentsItems = comments.map((item, idx) => {
-      return <Comment idx={idx} comment={item} />
+      return <Comment key={idx} comment={item} />
     })
 
     // badge with counter of comments
