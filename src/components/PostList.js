@@ -1,6 +1,12 @@
 import React from "react";
 
+import PostFilter from "./PostFilter";
+
 class PostList extends React.Component {
+
+  handlerFilter(query) {
+    console.log(query)
+  }
 
   render() {
 
@@ -14,12 +20,15 @@ class PostList extends React.Component {
     // badge with counter of posts
     const badgeHeader = posts.length ? <span className="badge">{posts.length}</span> : ""
 
+    const filter = <PostFilter handlerFilter={this.handlerFilter.bind(this)} />
+
     return (
       <div className="container-fluid">
         <p className="post__header_h3">
           <a href="#" className="btn btn-primary"><span className="glyphicon glyphicon-home"></span></a> Posts {badgeHeader}
         </p>
         <div className="list-group">
+          {filter}
           {listItems}
         </div>
       </div>
