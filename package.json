@@ -1,7 +1,12 @@
 {
-  "name": "cra",
+  "name": "test-blog",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Konstantin Skydan",
+    "url": "https://github.com/kskydan/test_react_redux"
+  },
+  "license": "MIT",
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
