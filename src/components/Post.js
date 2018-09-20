@@ -25,7 +25,7 @@ class Post extends React.Component {
 
         <div className="row">
 
-          <div className="col-md-8">
+          <div className="col-md-8 col-lg-9">
             <p className="post__header_h3"><a href="/" className="btn btn-primary"><span className="glyphicon glyphicon-chevron-left"></span></a> {post.title}</p>
             <div className="panel panel-default">
               <div className="panel-body">{post.body}</div>
@@ -34,7 +34,7 @@ class Post extends React.Component {
             {commentsItems}
           </div>
 
-          <div className="col-md-4">{userInfo}</div>
+          <div className="col-md-4 col-lg-3">{userInfo}</div>
 
         </div>
 
