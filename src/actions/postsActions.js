@@ -1,3 +1,6 @@
+import { fetchUser } from "./usersActions";
+import { fetchComments } from "./commentsActions";
+
 // posts actions
 export const POSTS_REQUEST = "POSTS_REQUEST"
 export const POSTS_SUCCESS = "POSTS_SUCCESS"
@@ -49,7 +52,7 @@ function fetchPostError(error) {
 
 export const fetchPosts = () => {
   return (dispatch) => {
-    dispatch(fetchPostsRequest());
+    dispatch(fetchPostsRequest())
     fetch('https://jsonplaceholder.typicode.com/posts')
       .then(res => {
         if (res.status === 200) {
@@ -65,10 +68,12 @@ export const fetchPosts = () => {
   }
 }
 
-export const fetchPost = (id) => {
+export const fetchPost = (postId) => {
   return (dispatch) => {
-    dispatch(fetchPostRequest());
-    fetch('https://jsonplaceholder.typicode.com/posts/' + id)
+
+    dispatch(fetchPostRequest())
+
+    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
       .then(res => {
         if (res.status === 200) {
           return res;
@@ -78,8 +83,25 @@ export const fetchPost = (id) => {
         }
       })
       .then(res => res.json())
+      .then(data => {
+        if (data && data.userId) {
+          fetchUser(data.userId)(dispatch)
+          return data
+        }
+        else {
+          new Error('User Not loaded!')
+        }
+      })
+      .then(data => {
+        if (data && data.id) {
+          fetchComments(data.id)(dispatch)
+          return data
+        }
+        else {
+          new Error('Comments Not loaded!')
+        }
+      })
       .then(data => dispatch(fetchPostSuccess(data)))
       .catch(err => dispatch(fetchPostError(err.message)))
-
   }
 }
