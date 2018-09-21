@@ -8,6 +8,7 @@ class PostList extends React.Component {
     super(props)
 
     this.state = {
+      loading: this.props.loading,
       filterQuery: "",
       posts: this.props.posts,
     }
@@ -20,7 +21,8 @@ class PostList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      posts: nextProps.posts
+      posts: nextProps.posts,
+      loading: nextProps.loading
     })
   }
 
@@ -55,6 +57,10 @@ class PostList extends React.Component {
 
     const filter = <PostFilter handlerFilter={this.handlerFilter.bind(this)} />
 
+    const loader = <img src={require('../images/loader.gif')} alt='' />
+
+    const listBody = this.state.loading ? loader : listItems
+
     return (
       <div className="container-fluid">
         <p className="post__header_h3">
@@ -62,7 +68,7 @@ class PostList extends React.Component {
         </p>
         <div className="list-group">
           {filter}
-          {listItems}
+          {listBody}
         </div>
       </div>
     )
