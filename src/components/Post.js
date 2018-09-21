@@ -60,7 +60,7 @@ class Post extends React.Component {
               <div className="panel-body">{postBody}</div>
             </div>
             <h4>Comments {badgeHeader}</h4>
-            {commentsItems}}
+            {commentsItems}
           </div>
 
           <div className="col-md-4 col-lg-3">{userInfo}</div>
