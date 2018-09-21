@@ -1,14 +1,39 @@
 import React from "react";
 
+// requested components
 import Comment from "./Comment";
 import UserInfo from "./UserInfo";
 
 class Post extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loading: true,
+      post: this.props.post,
+      user: this.props.user,
+      comments: this.props.comments,
+    }
+
+  }
+
+  componentDidMount() {
+    this.props.fetchPost(this.props.id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      post: nextProps.post,
+      user: nextProps.user,
+      comments: nextProps.comments,
+      loading: nextProps.loading
+    })
+  }
+
   render() {
 
-    console.log(this.props)
-
-    var { post, user, comments } = this.props
+    var { post, user, comments, loading } = this.state
 
     // list of comments
     const commentsItems = comments.map((item, idx) => {
@@ -18,7 +43,11 @@ class Post extends React.Component {
     // badge with counter of comments
     const badgeHeader = comments.length ? <span className="badge">{comments.length}</span> : ""
 
-    const userInfo = <UserInfo user={user} />
+    const userInfo = !loading && user ? <UserInfo user={user} /> : ""
+
+    const postTitle = !loading && post ? post.title : <img src={require('../images/loader.gif')} alt='' />
+
+    const postBody = !loading && post ? post.body : ""
 
     return (
       <div className="container-fluid">
@@ -26,12 +55,12 @@ class Post extends React.Component {
         <div className="row">
 
           <div className="col-md-8 col-lg-9">
-            <p className="post__header_h3"><a href="/" className="btn btn-primary"><span className="glyphicon glyphicon-chevron-left"></span></a> {post.title}</p>
+            <p className="post__header_h3"><a href="/" className="btn btn-primary"><span className="glyphicon glyphicon-chevron-left"></span></a> {postTitle}</p>
             <div className="panel panel-default">
-              <div className="panel-body">{post.body}</div>
+              <div className="panel-body">{postBody}</div>
             </div>
             <h4>Comments {badgeHeader}</h4>
-            {commentsItems}
+            {commentsItems}}
           </div>
 
           <div className="col-md-4 col-lg-3">{userInfo}</div>

@@ -8,49 +8,58 @@ class PostList extends React.Component {
     super(props)
 
     this.state = {
-      filteredPosts: this.props.posts
+      loading: this.props.loading,
+      filterQuery: "",
+      posts: this.props.posts,
     }
 
   }
 
-  handlerFilter(query) {
+  componentDidMount() {
+    this.props.fetchPosts()
+  }
 
-    console.log('filter', query)
-
-    let filtered = this.props.posts
-
-    if (query) {
-      
-      filtered = filtered.filter((item) => {
-        let { title, body } = item
-        return (title && body) ? title.indexOf(query) !== -1 || body.indexOf(query) !== -1 : false
-
-      })
-
-    }
-
-    console.log('filtered', filtered)
-
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      filteredPosts: filtered
+      posts: nextProps.posts,
+      loading: nextProps.loading
     })
+  }
 
+  handlerFilter(query) {
+    this.setState({
+      filterQuery: query ? query : ""
+    })
   }
 
   render() {
 
-    var posts = this.state.filteredPosts
-    console.log('render posts', posts)
+    // apply filter to posts
+    var filtered = this.state.posts
+    var filterQuery = this.state.filterQuery
+
+    if (filterQuery) {
+
+      filtered = filtered.filter((item) => {
+        let { title, body } = item
+        return (title && body) ? title.indexOf(filterQuery) !== -1 || body.indexOf(filterQuery) !== -1 : false
+      })
+
+    }
 
     // list of posts
-    const listItems = posts.map((item, idx) => {
+    const listItems = filtered.map((item, idx) => {
       return <a key={idx} href={"/posts/" + item.id} className="list-group-item">{item.title}</a>
     })
 
     // badge with counter of posts
-    const badgeHeader = posts.length ? <span className="badge">{posts.length}</span> : ""
+    const badgeHeader = filtered.length ? <span className="badge">{filtered.length}</span> : ""
 
     const filter = <PostFilter handlerFilter={this.handlerFilter.bind(this)} />
+
+    const loader = <img src={require('../images/loader.gif')} alt='' />
+
+    const listBody = this.state.loading ? loader : listItems
 
     return (
       <div className="container-fluid">
@@ -59,7 +68,7 @@ class PostList extends React.Component {
         </p>
         <div className="list-group">
           {filter}
-          {listItems}
+          {listBody}
         </div>
       </div>
     )
